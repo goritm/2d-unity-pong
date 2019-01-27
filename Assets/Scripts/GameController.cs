@@ -2,19 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
 
     public GameObject ballPrefab;
-    public Text score1Text;
-    public Text score2Text;
-    public Text ganadorText;
-    public float scoreCoordinates = 3.4f;
-
     private Ball currentBall;
+    public Text score1Text;
     private int score1 = 0;
+    public Text score2Text;
     private int score2 = 0;
+    public int cantidadPuntos = 3;
+    public Text ganadorText;
+    public Text restartText;
+    private bool restart = false;
+    public float scoreCoordinates = 3.4f;
 
     // Use this for initialization
     void Start()
@@ -52,15 +55,29 @@ public class GameController : MonoBehaviour
             }
         }
 
-        if (score1 == 5)
+        if (score1 == cantidadPuntos)
         {
+            ganadorText.color = Color.red;
             ganadorText.text = "¡GANA EL JUGADOR 1!";
-            Destroy(currentBall.gameObject);
+            Destroy(currentBall);
+            restart = true;
         }
-        else if (score2 == 5)
+        else if (score2 == cantidadPuntos)
         {
+            ganadorText.color = Color.blue;
             ganadorText.text = "¡GANA EL JUGADOR 2!";
-            Destroy(currentBall.gameObject);
+            Destroy(currentBall);
+            restart = true;
+        }
+
+        if (restart)
+        {
+            restartText.color = Color.yellow;
+            restartText.text = "Presione R para Reiniciar";
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                SceneManager.LoadScene("Juego", LoadSceneMode.Single);
+            }
         }
     }
 }
